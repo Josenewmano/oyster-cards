@@ -1,20 +1,24 @@
-require_relative '../lib/Oystercard.rb'
+require_relative '../lib/oyster_card'
 
-describe Oystercard do
-  let (:station1) { double (:station) }
-  let (:station2) { double (:station) }
+describe OysterCard do
+  let(:station1) { double(:station) }
+  let(:station2) { double(:station) }
 
-  it "has a balance when created" do
+  it 'has a balance when created' do
     expect(subject.balance).to eq 0
   end
 
-  it "can have the balance topped up" do
-    expect(subject.top_up(5)).to eq "Your balance is £5"
+  it 'can have the balance topped up' do
+    expect(subject.top_up(5)).to eq 'Your balance is £5'
   end
 
-  it "has a maximum balance of £90" do
+  it 'has a maximum balance of £90' do
     subject.top_up(subject.limit)
     expect {subject.top_up(1) }.to raise_error("Top-up will exceed limit of £#{subject.limit}")
+  end
+
+  it 'has an empty list of journeys by default' do
+    expect(subject.journey_history).to eq nil
   end
 
 =begin
@@ -66,5 +70,4 @@ describe Oystercard do
       expect(subject.journey_history).to eq(["Entered at: #{:station1}, exited at: #{:station2}"])
     end
   end
-
 end
