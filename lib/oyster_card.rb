@@ -7,7 +7,6 @@ class OysterCard
   def initialize
     @balance = 0
     @limit = LIMIT
-    @entry_station = nil
     @list_of_journeys = []
   end
 
@@ -18,19 +17,16 @@ class OysterCard
     "Your balance is £#{@balance}"
   end
 
-  def in_journey?
-    @entry_station != nil
-  end
 
   def touch_in(station)
     raise 'Insufficient balance' if insufficient_balance?
 
-    @entry_station = station
+    @journey = Journey.new(station)
   end
 
   def touch_out(exit_station)
-    @list_of_journeys.push({ entry: @entry_station, exit: exit_station })
-    @entry_station = nil
+    @journey.end_journey(exit_station)
+    @list_of_journeys.push(@journey.journey)
     deduct(MINIMUM)
     'Journey complete.'
   end
