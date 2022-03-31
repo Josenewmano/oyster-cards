@@ -53,5 +53,13 @@ describe OysterCard do
       subject.touch_out(:station2)
       expect(subject.journey_history).to eq(["Entered at: #{:station1}, exited at: #{:station2}"])
     end
+
+    it "Will return the penalty fare if journey has no exit station" do
+      expect { subject.touch_in(:station2) }.to change{ subject.balance }.by(-6)
+    end
   end
+    it "will return penalty fare if journey has no entry station" do
+      subject.top_up(10)
+      expect { subject.touch_out(:station2) }.to change{ subject.balance }.by(-6)
+    end
 end
